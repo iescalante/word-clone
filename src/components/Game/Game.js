@@ -8,14 +8,14 @@ import { replaceArrayItemWithGuess, showHappyBanner, showSadBanner } from '../..
 import Keyboard from '../Keyboard/Keyboard';
 
 // Pick a random word on every pageload.
-const answer = sample(WORDS);
+const sampledAnswer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+console.info({ sampledAnswer });
 const initialGuessList = range(NUM_OF_GUESSES_ALLOWED).map(_item => "");
-const initialKeyboardLetters = keyboardLetters.map(letter => ({ value: letter, status: ""}));
+export const initialKeyboardLetters = keyboardLetters.map(letter => ({ value: letter, status: ""}));
 
 function Game() {
-  // const [answer, setAnswer] = React.useState(sampledAnswer);
+  const [answer, setAnswer] = React.useState(sampledAnswer);
   const [guess, setGuess] = React.useState("");
   const [guessList, setGuessList] = React.useState(initialGuessList);
   const [hasEnded, setHasEnded] = React.useState(false);
@@ -34,7 +34,12 @@ function Game() {
     setGuess("");
   }
   const restartGame = React.useCallback(() => {
-    window.location.reload();
+    const newAnswer = sample(WORDS);
+    setKeyboardValues(initialKeyboardLetters);
+    setGuess("");
+    setGuessList(initialGuessList);
+    setAnswer(newAnswer);
+    setBanner();
   }, []);
 
   const handleLetterColorFiller = (newValue) => setKeyboardValues(newValue);
@@ -55,7 +60,7 @@ function Game() {
         setBanner(showSadBanner(answer, restartGame));
       }
     }
-  }, [guessList, restartGame])
+  }, [guessList, restartGame, answer])
 
   return (
     <>

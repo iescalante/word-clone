@@ -1,6 +1,7 @@
 import React from "react";
 import { range } from "../../utils";
 import { checkGuess } from "../../game-helpers";
+import { initialKeyboardLetters } from "../Game";
 
 const gridBuilder = (list, answer, keyboardValues, keyboardColorFiller) => {
   return list.map((guessWord, ndx) => {
@@ -46,6 +47,10 @@ function Guess({ guessList, answer, keyboardValues, keyboardColorFiller }) {
   React.useEffect(() => {
     keyboardColorFiller(newKeyboardValues);
   }, [newKeyboardValues, keyboardColorFiller])
+
+ React.useEffect(() => {
+  setNewKeyboardValues(initialKeyboardLetters);
+ }, [answer])
 
   return (
     <div className="guess-results">
